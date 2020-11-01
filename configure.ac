@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 AC_INIT([Stupid name generator], [0.0], [george@altlinux.org])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT([disable-static])
-AC_CONFIG_SRCDIR([namegen.h])
+AC_CONFIG_SRCDIR([src/namegen.h])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
@@ -20,5 +20,6 @@ AC_CHECK_HEADERS([stdlib.h])
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 src/Makefile])
 AC_OUTPUT
