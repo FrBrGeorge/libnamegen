@@ -8,6 +8,9 @@ LT_INIT([disable-static])
 AC_CONFIG_SRCDIR([src/namegen.h])
 AC_CONFIG_HEADERS([config.h])
 
+#
+PKG_CHECK_MODULES([CHECK],[check])
+
 # Checks for programs.
 AC_PROG_CC
 

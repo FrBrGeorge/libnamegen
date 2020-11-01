@@ -1,4 +1,3 @@
-TESTS = dummy
-check_PROGRAMS = dummy fixed
-dummy_CFLAGS = -I$(top_builddir)/src
-dummy_LDADD = $(top_builddir)/src/libnamegen.la
+TESTS = dummy fixed
+AM_CFLAGS = -I$(top_builddir)/src @CHECK_CFLAGS@
+LDADD = $(top_builddir)/src/libnamegen.la @CHECK_LIBS@
