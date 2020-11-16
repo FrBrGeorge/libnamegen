@@ -8,6 +8,10 @@ lib_LTLIBRARIES = libnamegen.la
 
 bin_PROGRAMS=namegen
 namegen_LDADD = libnamegen.la
+pkgdata_DATA = namegen.1
+
+%.1:	%
+	-$(HELP2MAN) --no-info --output=$@ --name='@PACKAGE_NAME@' ./$<
 
 gcov:
 	gcov .libs/libnamegen -t -j -k
