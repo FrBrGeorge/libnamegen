@@ -1,60 +1,16 @@
-/* Fantasy name generator ANSI C header library
- * This is free and unencumbered software released into the public domain.
+/** @file libnamegen.c
+ * Main library file
  *
- * The compile() function creates a name generator based on an input
- * pattern. The letters s, v, V, c, B, C, i, m, M, D, and d represent
- * different types of random replacements. Everything else is emitted
- * literally.
- *
- *   s - generic syllable
- *   v - vowel
- *   V - vowel or vowel combination
- *   c - consonant
- *   B - consonant or consonant combination suitable for beginning a word
- *   C - consonant or consonant combination suitable anywhere in a word
- *   i - insult
- *   m - mushy name
- *   M - mushy name ending
- *   D - consonant suited for a stupid person's name
- *   d - syllable suited for a stupid person's name (begins with a vowel)
- *
- * All characters between parenthesis () are emitted literally. For
- * example, the pattern "s(dim)", emits a random generic syllable
- * followed by "dim".
- *
- * Characters between angle brackets <> emit patterns from the table
- * above. Imagine the entire pattern is wrapped in one of these.
- *
- * In both types of groupings, a vertical bar | denotes a random choice.
- * Empty groups are allowed. For example, "(foo|bar)" emits either "foo"
- * or "bar". The pattern "<c|v|>" emits a constant, vowel, or nothing at
- * all.
- *
- * An exclamation point ! means to capitalize the component that follows
- * it. For example, "!(foo)" will emit "Foo" and "v!s" will emit a
- * lowercase vowel followed by a capitalized syllable, like "eRod".
- *
- * This library is based on the RinkWorks Fantasy Name Generator.
- * http://www.rinkworks.com/namegen/
+ * Fantasy name generator function
  */
 #include "namegen.h"
 #include "config.h"
-#define NAMEGEN_MAX_DEPTH  32 /* Cannot exceed bits in a long */
-
-/* Generate a name into DST of LEN bytes from PATTERN and using SEED.
- *
- * The length must be non-zero. For best results, the lower 32 bits of
- * the seed should be thoroughly initialized. A particular seed will
- * produce the same results on all platforms.
- *
- * The return value is one of the above codes, indicating success or
- * that something went wrong. Truncation occurs when DST was too short.
- * Pattern is validated even when the output has been truncated.
- */
+#define NAMEGEN_MAX_DEPTH  32 /**< Cannot exceed bits in a long */
 
 /* Implementation */
 
-/* Rather than compile the pattern into some internal representation,
+/**
+ * Rather than compile the pattern into some internal representation,
  * the name is generated directly from the pattern in a single pass
  * using reservoir sampling. If an alternate option is selected, the
  * output pointer is reset to "undo" the output for the previous group.
@@ -66,7 +22,7 @@
  * relocation table, but without any additional run-time overhead.
  */
 
-/* Return offsets table offset for C, or -1 if not special.
+/** Return offsets table offset for c, or -1 if not special.
  * The return value is suitable for namegen_offsets().
  */
 static int
@@ -95,7 +51,8 @@ namegen_special(int c)
     return -1;
 }
 
-/* Return offsets and number of offsets for special N.
+/**
+ * Return offsets and number of offsets for special N.
  * Offsets point into namegen_argz.
  */
 static int
@@ -294,7 +251,15 @@ namegen_cap(int c, int capitalize)
     return capitalize && c >= 'a' && c <= 'z' ? c & ~0x20 : c;
 }
 
-/* Copy a random substitution for template C into P, but only before E.
+/**
+ * Copy a random substitution for template @p c into @p p, but only before @p e.
+ *
+ * @param c Template number to copy
+ * @param p Buffer to place substitution
+ * @param e Buffer limit
+ * @param seed Random seed
+ * @param capitalize Whether to capitalize a substitution
+ * @returns Buffer itself
  */
 static char *
 namegen_copy(char *p, char *e, int c, unsigned long *seed, int capitalize)
@@ -318,6 +283,19 @@ namegen_copy(char *p, char *e, int c, unsigned long *seed, int capitalize)
     return p;
 }
 
+/**
+ * Generate a name into @p dst of @p len bytes from @p pattern and using @p seed.
+ *
+ * @param dst Truncation occurs when @p dst was too short.
+ * @param len The length must be non-zero
+ * @param pattern Pattern is validated even when the output has been truncated.
+ * @param seed For best results, the lower 32 bits of
+ * the seed should be thoroughly initialized. A particular seed will
+ * produce the same results on all platforms.
+ *
+ * @returns The return value is one of the above codes, indicating success or
+ * that something went wrong.
+ */
 int
 namegen(char *dst, unsigned long len, const char *pattern, unsigned long *seed)
 {
