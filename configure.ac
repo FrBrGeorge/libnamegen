@@ -28,6 +28,8 @@ AC_CONFIG_FILES([Makefile
 		 tests/Makefile
                  src/Makefile
 		 Doxyfile
+		 src/namegen.md
+		 src/libnamegen.md
 		 ])
 
 AC_ARG_ENABLE([gcov],
