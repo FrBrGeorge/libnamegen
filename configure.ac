@@ -4,6 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([Stupid name generator], [0.0], [george@altlinux.org])
 AM_INIT_AUTOMAKE([foreign])
+DX_INIT_DOXYGEN(namegen)
 LT_INIT([disable-static])
 AC_CONFIG_SRCDIR([src/namegen.h])
 AC_CONFIG_HEADERS([config.h])
@@ -25,7 +26,9 @@ AC_CHECK_HEADERS([stdlib.h])
 
 AC_CONFIG_FILES([Makefile
 		 tests/Makefile
-                 src/Makefile])
+                 src/Makefile
+		 Doxyfile
+		 ])
 
 AC_ARG_ENABLE([gcov],
   [AS_HELP_STRING([--enable-gcov],
